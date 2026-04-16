@@ -1,0 +1,22 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\*\shell\Open with Code]
+@="Open with Code"
+"Icon"="C:\\Users\\[妳的使用者名稱]\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe,0"
+
+[HKEY_CLASSES_ROOT\*\shell\Open with Code\command]
+@="\"C:\\Users\\[妳的使用者名稱]\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" \"%1\""
+
+[HKEY_CLASSES_ROOT\Directory\shell\Open with Code]
+@="Open with Code"
+"Icon"="C:\\Users\\[妳的使用者名稱]\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe,0"
+
+[HKEY_CLASSES_ROOT\Directory\shell\Open with Code\command]
+@="\"C:\\Users\\[妳的使用者名稱]\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" \"%1\""
+
+[HKEY_CLASSES_ROOT\Directory\background\shell\Open with Code]
+@="Open with Code"
+"Icon"="C:\\Users\\[妳的使用者名稱]\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe,0"
+
+[HKEY_CLASSES_ROOT\Directory\background\shell\Open with Code\command]
+@="\"C:\\Users\\[妳的使用者名稱]\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" \"%1\""
