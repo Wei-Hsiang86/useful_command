@@ -11,7 +11,7 @@
 | `MicrosoftDefenderATPOnboardingLinuxServer.py` | 詢問客戶 | 務必提前索取 |
 | 確認 log rotate 時間 | 詢問客戶 | |
 
-> ⚠️ `MicrosoftDefenderATPOnboardingLinuxServer.py` 包含院方組織專屬資訊，需由院方 IT 從 Microsoft Defender 入口網站下載後提供，無法自行下載替代。
+> ⚠️ `MicrosoftDefenderATPOnboardingLinuxServer.py` 包含公司組織專屬資訊，需由客戶 IT 從 Microsoft Defender 入口網站下載後提供，無法自行下載替代。
 
 ---
 
@@ -70,7 +70,7 @@ sudo bash install_mde.sh
 - 執行組織上線
 - 啟用即時保護（Real-Time Protection）
 - 建立 Log 資料夾（`/opt/edr/logs/`）
-- 設定 Log 自動清理（logrotate，目前預設保留 12 週，請與院方確認後調整）
+- 設定 Log 自動清理（logrotate，目前預設保留 12 週，請與客戶確認後調整）
 - 寫入 Crontab 排程：
   - 每天 01:00 病毒碼更新
   - 每天 02:00 快速掃描
@@ -89,7 +89,7 @@ sudo bash install_mde.sh
 | `RTP` | `true` |
 | `connectivity` | 顯示連線成功 |
 
-若 `org_id` 不符合，請停止並聯絡院方 IT 確認上線套件是否正確。
+若 `org_id` 不符合，請停止並聯絡客戶 IT 確認上線套件是否正確。
 
 ---
 
@@ -151,4 +151,4 @@ exit
 Crontab 部分有防重複機制，不會產生重複排程。其他步驟（apt install、mdatp 上線）重複執行也是安全的。
 
 **Q：org_id 驗證失敗怎麼辦？**
-請聯絡院方 IT，確認提供的 `MicrosoftDefenderATPOnboardingLinuxServer.py` 是否為正確的版本。
+請聯絡客戶 IT，確認提供的 `MicrosoftDefenderATPOnboardingLinuxServer.py` 是否為正確的版本。
