@@ -7,6 +7,7 @@ set -euo pipefail
 
 EXPECTED_ORG_ID="e6f24d70-f75f-4ebb-a9a9-7b51f59e0ece"
 LOG_DIR="/opt/edr/logs"
+INSTALL_LOG="/opt/edr/install_$(date '+%Y%m%d_%H%M%S').log"
 ONBOARDING_SCRIPT="$(dirname "$0")/MicrosoftDefenderATPOnboardingLinuxServer.py"
 
 # ── 前置檢查 ──────────────────────────────────────────
@@ -21,9 +22,14 @@ if [ ! -f "$ONBOARDING_SCRIPT" ]; then
     exit 1
 fi
 
+# ── 建立 /opt/edr 並啟動 log 記錄 ────────────────────
+mkdir -p "$LOG_DIR"
+exec > >(tee "$INSTALL_LOG") 2>&1
+
 echo "=============================="
 echo " MDE 安裝腳本"
 echo " 開始時間：$(date '+%Y-%m-%d %H:%M:%S')"
+echo " 安裝 Log：$INSTALL_LOG"
 echo "=============================="
 
 # ── 1. 安裝依賴套件 ───────────────────────────────────
@@ -55,9 +61,8 @@ python3 "$ONBOARDING_SCRIPT"
 echo "[6/7] 啟用即時保護..."
 mdatp config real-time-protection --value enabled
 
-# ── 7. 建立 Log 資料夾與 Crontab ──────────────────────
+# ── 7. 建立 Log 資料夾與排程 ──────────────────────────
 echo "[7/7] 建立 Log 資料夾與排程..."
-mkdir -p "$LOG_DIR"
 
 # 建立 logrotate 設定
 cat > /etc/logrotate.d/mdatp << 'LOGROTATE'
@@ -93,17 +98,18 @@ echo " 安裝後健康確認"
 echo "=============================="
 
 ACTUAL_ORG_ID=$(mdatp health --field org_id)
-echo "org_id：$ACTUAL_ORG_ID"
+echo "mdatp org_id：$ACTUAL_ORG_ID"
 if [ "$ACTUAL_ORG_ID" = "$EXPECTED_ORG_ID" ]; then
-    echo "✅ org_id 驗證通過"
+    echo "[ OK ] org_id 驗證通過"
 else
-    echo "❌ org_id 不符合！請確認上線套件是否正確"
+    echo "[FAIL] org_id 不符合！請確認上線套件是否正確"
 fi
 
-echo "healthy：$(mdatp health --field healthy)"
-echo "RTP：$(mdatp health --field real_time_protection_enabled)"
-echo "connectivity：$(mdatp connectivity test)"
+echo "mdatp healthy：$(mdatp health --field healthy)"
+echo "mdatp RTP：$(mdatp health --field real_time_protection_enabled)"
+echo "mdatp connectivity：$(mdatp connectivity test)"
 
 echo ""
-echo "✅ 安裝完成：$(date '+%Y-%m-%d %H:%M:%S')"
-echo "Log 位置：$LOG_DIR"
+echo "[ OK ] 安裝完成：$(date '+%Y-%m-%d %H:%M:%S')"
+echo "安裝 Log 已儲存至：$INSTALL_LOG"
+echo "排程 Log 位置：$LOG_DIR"

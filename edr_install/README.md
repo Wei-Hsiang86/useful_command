@@ -23,7 +23,13 @@
 cat /etc/os-release
 ```
 
-確認為 **Ubuntu 24.04**，再繼續後續步驟。
+確認為 **Ubuntu 24.04**，再繼續後續步驟。若版本不為 24.04，找到下面指令並且修改 version
+
+```
+curl -o /tmp/microsoft.list https://packages.microsoft.com/config/ubuntu/24.04/prod.list
+                                                                            ↑
+                                                                          改這裡
+```
 
 ---
 
