@@ -64,16 +64,6 @@ mdatp config real-time-protection --value enabled
 # ── 7. 建立 Log 資料夾與排程 ──────────────────────────
 echo "[7/7] 建立 Log 資料夾與排程..."
 
-# 建立 logrotate 設定
-cat > /etc/logrotate.d/mdatp << 'LOGROTATE'
-/opt/edr/logs/*.log {
-    weekly
-    rotate 12
-    compress
-    missingok
-    notifempty
-}
-LOGROTATE
 
 # 先移除舊的 MDE 排程，再寫入新的（避免重複）
 crontab -l 2>/dev/null | grep -v 'mdatp' > /tmp/existing_cron || true
@@ -97,7 +87,9 @@ echo "=============================="
 echo " 安裝後健康確認"
 echo "=============================="
 
-ACTUAL_ORG_ID=$(mdatp health --field org_id)
+echo "等待 mdatp 服務啟動..."
+sleep 10
+ACTUAL_ORG_ID=$(mdatp health --field org_id | tr -d '"')
 echo "mdatp org_id：$ACTUAL_ORG_ID"
 if [ "$ACTUAL_ORG_ID" = "$EXPECTED_ORG_ID" ]; then
     echo "[ OK ] org_id 驗證通過"
